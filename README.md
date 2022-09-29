@@ -85,9 +85,9 @@ Why set up an environment?
 #### .bashrc
 
 ```bash
-#!/bin/bash             > NOTE: This first commented line is called a
-                                shebang, it declares the file content
-                                type.
+#!/bin/bash
+# > NOTE: The first commented line above is called a shebang, it
+#          declares the file content type.
 # --------------------------- bash config BEG-------------------------
 #
 
@@ -172,30 +172,41 @@ alias diff='diff --color'
 if has("eval")
   let skip_defaults_vim = 1
 
+" automatically indent new lines
 set autoindent
+" automatically write files when changing between files - Autosave
 set autowrite
+" turn col and row positions on in bottom right section
 set ruler
+" show command and insert mode
 set showmode
+" set tab value
 set tabstop=2
 set smartindent
 set textwidth=72
+" disable relative line numbers, comment to sample it
 set norelativenumber
+" highlight search hits
 set hlsearch
 set incsearch
 set linebreak
+" stop complaints about switching buffers with unsaved changes
 set hidden
+" set command history
 set history=1000
+" enable faster scrolling
 set ttyfast
+" allows Vim to sense filetype
 set filetype plugin on
 set background=dark
 
-if v:version >= 800 " > NOTE: As in bash scripts, we can write logic into the
-                    "  .vimrc and vimscript in general
+if v:version >= 800
+  " > NOTE: As in bash scripts, we can write logic into the
+  "          .vimrc and vimscript in general
+  
   " stop vim from silently messing with files that it shouldn't mess with
   set nofixedofline
 endif
-
-
 ```
 
 ### SSH Keys
