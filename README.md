@@ -8,14 +8,30 @@
   - [Operating System](#operating-system)
   - [Chocolatey](#chocolatey)
   - [Virtual Box](#virtual-box)
+- [Setup](#setup)
   - [VM Setup](#vm-setup)
   - [System Upgrade](#system-upgrade)
-- [Setup](#setup)
   - [Environment](#environment)
     - [.bashrc](#bashrc)
     - [.vimrc](#vimrc)
   - [SSH Keys](#ssh-keys)
-  - 
+- [Learning the Shell](#learning-the-shell)
+  -
+- [Navigation](#navigation)
+  -
+- [](#)
+- [](#)
+- [](#)
+- [](#)
+- [](#)
+- [](#)
+- [](#)
+- [](#)
+
+  TODO: 
+
+- [Resources](#resources)
+
 
 ## Goals
 
@@ -216,7 +232,10 @@ endif
 ssh-keygen -t rsa -b 4096
 ```
 
+## Resources
 
+[The Linux Command Line](https://sourceforge.net/projects/linuxcommand/files/TLCL/19.01/TLCL-19.01.pdf/download) is a free book in PDF format, released under the
+Creative Commons [license](https://creativecommons.org/licenses/by-nc-nd/3.0/).
 
 ##Itinerary
 * Presentation ( self and students )
@@ -231,4 +250,4 @@ ssh-keygen -t rsa -b 4096
   - set up various users, their home directories, different Shells
   - create directories for future NFS shares
   - install NFS server
-*
+
