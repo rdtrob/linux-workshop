@@ -12,7 +12,7 @@ fi
 
 # --------------------------- smart prompt ---------------------------
 # Courtesy of [rwxrob](https://github.com/rwxrob/dot)
-# >Note: Ignore this for now, just enjoy the nice Bash prompt
+# > NOTE: Ignore this for now, just enjoy the nice Bash prompt
 PROMPT_LONG=20
 PROMPT_MAX=95
 PROMPT_AT=@
@@ -49,7 +49,7 @@ __ps1() {
 
 PROMPT_COMMAND="__ps1"
 
-# --------------------------- Env variables ---------------------------
+# --------------------------- env variables ---------------------------
 #
 export HISTCONTROL=ignoreboth
 export HISTSIZE=5000

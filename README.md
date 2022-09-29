@@ -62,8 +62,8 @@ on your physical one. This brings security and convenience in certain scenarios.
 
 ### VM Setup
 
-> TODO: Maybe elaborate a bit on the steps ?( or KISS )
-Create a virtual machine with two CPU cores, 2048 MB of RAM, a 16GB OS disk and one 16GB `data`
+> TODO: Maybe elaborate a bit on the steps ? (or KISS)
+Create a virtual machine with two CPU cores, 2048 MB of RAM, a 16GB OS disk and one 16GB data
 disk. Mount the downloaded Debian iso you've downloaded as the virtual disk drive. Install the OS.
 
 ### System Upgrade
@@ -161,7 +161,7 @@ alias ls='ls -h --color=auto'
 alias diff='diff --color'
 
 #
-# --------------------------- bash prompt END ------------------------
+# --------------------------- bash config END ------------------------
 
 ```
 
@@ -172,6 +172,7 @@ alias diff='diff --color'
 "  a stripped down version of VIm.
 if has("eval")
   let skip_defaults_vim = 1
+endif
 
 " automatically indent new lines
 set autoindent

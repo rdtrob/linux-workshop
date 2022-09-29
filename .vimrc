@@ -2,6 +2,7 @@
 "  a stripped down version of VIm.
 if has("eval")
   let skip_defaults_vim = 1
+endif
 
 " automatically indent new lines
 set autoindent
