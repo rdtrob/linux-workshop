@@ -16,17 +16,11 @@
     - [.vimrc](#vimrc)
   - [SSH Keys](#ssh-keys)
 - [Learning the Shell](#learning-the-shell)
-  -
+  - [](#)
+  - [](#)
 - [Navigation](#navigation)
-  -
-- [](#)
-- [](#)
-- [](#)
-- [](#)
-- [](#)
-- [](#)
-- [](#)
-- [](#)
+  - [](#)
+  - [](#)
 
   TODO: 
 
