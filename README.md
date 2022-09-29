@@ -19,8 +19,8 @@
 
 ## Goals
 
-Provide entry-level presentation to `Debian`, set up an environment and show
-example administration tasks.
+Provide entry-level presentation to Linux via `Debian`, set up an environment
+and go over common administration tasks.
 
 ### Why Debian?
 Debian is the distribution Ubuntu is based on, it has the same package manager
@@ -30,7 +30,7 @@ Debian more.
 ### Why Ansible
 
 Ansible replicates what we'd use in a work environment to deploy IaC
-( infrastructure as code ). Put simply, it allows us to automate the installation
+(infrastructure as code). Put simply, it allows us to automate the installation
 of software and administer servers. And what better way to show the power of auto-
 mation than deploy the workshop setup itself?
 
@@ -48,12 +48,12 @@ wget https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-XX.Y.Z-amd
 > NOTE: Check `https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/` for the
 latest version.
 
-### Chocolatey
+### [Chocolatey](https://chocolatey.org/install)
 
 Here's a package manager for Windows, if you weren't aware there was one. Gone are
 the days of manually searching the web for executables to install your favorite software.
 
-### Virtual Box
+### [Virtual Box](https://www.virtualbox.org/wiki/Downloads)
 
 Simple [Tier 2 hypervisor](https://en.wikipedia.org/wiki/Hypervisor) that we can use.
 Explaining virtualization and the differencebetween Tier 1 and 2 hypervisors is
@@ -62,8 +62,9 @@ on your physical one. This brings security and convenience in certain scenarios.
 
 ### VM Setup
 
-> TODO:
-
+> TODO: Maybe elaborate a bit on the steps ?( or KISS )
+Create a virtual machine with two CPU cores, 2048 MB of RAM, a 16GB OS disk and one 16GB `data`
+disk. Mount the downloaded Debian iso you've downloaded as the virtual disk drive. Install the OS.
 
 ### System Upgrade
 
@@ -200,10 +201,9 @@ set ttyfast
 set filetype plugin on
 set background=dark
 
+" > NOTE: Like in bash scripts, we can write logic into the
+"          .vimrc and vimscript in general
 if v:version >= 800
-  " > NOTE: As in bash scripts, we can write logic into the
-  "          .vimrc and vimscript in general
-  
   " stop vim from silently messing with files that it shouldn't mess with
   set nofixedofline
 endif
