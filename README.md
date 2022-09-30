@@ -1,6 +1,5 @@
 # Linux-workshop
 
-## Table of Contents
 - [Goals](#goals)
   - [Why Debian?](#why-debian)
   - [Why Ansible?](#why-ansible)
@@ -11,25 +10,82 @@
 - [Setup](#setup)
   - [VM Setup](#vm-setup)
   - [System Upgrade](#system-upgrade)
+
+## Table of Contents
+- [Part 1 - SHELL](#part-1-shell)
+  - [Learning the Shell](#learning-the-shell)
+    - [Terminal](#terminal)
+    - [History](#history)
+  - [Navigation](#navigation)
+    - [File system tree](#file-system-tree)
+    - [Pathnames](#pathnames)
+  - [Exploring the system](#exploring-the-system)
+    - [Less is more](#less-is-more)
+    - [Links](#links)
+  - [Commands](#commands)
+    - [Identifying commands](#identifying-commands)
+    - [Redirection and pipes](#redirection-and-pipes)
+    - [Expansion & quoting](#expansion-and-quoting)
+  - [Permissions](#permissions)
+    - [Owners, groups & others](#owners-groups-and-others)
+    - [RWX, identities](#rwx-identities)
+  - [Processes](#processes)
+    - [How a process works](#how-a-process-works)
+    - [Sockets and signals](#sockets-and-signals)
+    #- [Unit files](#unit-files)
+    #- [Process spawning](#process-spawning)
+    #- [Headers](#headers)
+    #- [Accessing system resources](#accessing-system-resources)
+    #- [Inter-process communication](#inter-process-communication)
+- [Part 2 - Configuration & Environment](#part-2-configuration-and-environment)
   - [Environment](#environment)
-    - [.bashrc](#bashrc)
-    - [.vimrc](#vimrc)
-  - [SSH Keys](#ssh-keys)
-- [Learning the Shell](#learning-the-shell)
-  - [](#)
-  - [](#)
-- [Navigation](#navigation)
-  - [](#)
-  - [](#)
-- [Processes](#processes)
-  - [Pipes](#)
-  - [Sockets](#)
-  - [Unit files](#) # How linux spawns new processes, what headers they have, how they access  system resources and how they communicate with other processes
-  - [](#)
-- [](#)
-
-  TODO: 
-
+    - [What, how and why](#what-how-and-why)
+    - [Files and text editors](#files-and-text-editors)
+  - [Introduction to Vi/VIm](#introduction-to-vi)
+    - [Editing Modes](#editing-modes)
+    - [Movement](#movement)
+    - [Search and replace](#search-and-replace)
+    - [Editing multiple files](#editing-multiple-files)
+    - [Customizing VIM](#customizing-vim)
+    - [Tips & Tricks](#tips-and-tricks)
+  - [Prompt](#prompt)
+    - [Customizing bashrc](#customizing-bashrc)
+    - [Build logic in your configs](#build-logic-in-your-configs)
+- [Part 3 - Common tasks and tools](#part-3-common-tasks-and-tools)
+  - [Package Managers](#package-managers)
+    - [Common tasks](#common-tasks)
+  - [Searching for files](#searching-for-files)
+    - [Locate & find](#locate-and-find)
+    - [xargs](#xargs)
+  - [Archiving and backup](#archiving-and-backup)
+    - [gzip](#gzip)
+    - [tar](#tar)
+    - [zip](#zip)
+    - [File synchronization](#file-synchronization)
+  - [Regular Expressions](#regular-expressions)
+    - [grep](#grep)
+    - [Logic, any and negation](#logic-any-and-negation)
+    - [Quantifiers](#quantifiers)
+    - [find, locate and less](#find-locate-and-less)
+  - [Text processing](#text-processing)
+    - [cat, sort and uniq](#cat-sort-uniq)
+    - [cut, paste and join](#cut-paste-join)
+    - [diff and sed](#diff-and-sed)
+- [Shell scripts](#shell-scripts)
+  - [Format](#format)
+  - [Indentation](#indentation)
+  - [Keep scripts running](#keep-scripts-running)
+  - [VIm for script writing](#vim-for-script-writing)
+  - [Shell scripts in .bashrc](#shell-scripts-in-bashrc)
+  - [If tests and parantheses](#if-tests-and-parantheses)
+  - [Read IFS](#read-ifs)
+  - [Loops and breaks](#loops-and-breaks)
+  - [Strings and numbers](#strings-and-numbers)
+  - [Troubleshooting](#troubleshooting)
+  - [Patterns with case](#patterns-with-case)
+  - [Arrays](#arrays)
+    - [Creating, assigning and accessing values](#creating-assigning-and-accessing-values)
+    - [Array operations](#array-operations)
 - [Resources](#resources)
 
 
@@ -236,17 +292,19 @@ ssh-keygen -t rsa -b 4096
 
 [The Linux Command Line](https://www.linuxcommand.org/tlcl.php) ([Download](https://sourceforge.net/projects/linuxcommand/files/TLCL/19.01/TLCL-19.01.pdf/download)) & Adventures with the Linux Command Line ([Download](https://sourceforge.net/projects/linuxcommand/files/AWTLCL/21.10/AWTLCL-21.10.pdf/download)) are free books in PDF format, released under the Creative Commons [license](https://creativecommons.org/licenses/by-nc-nd/3.0/).
 
-##Itinerary
+
+# ######################################################################################
+## Itinerary
 * Presentation ( self and students )
 * Debian ISO DL \& VirtualBox Install ( via chocolatey (?))
 * System update, install Ansible, DL & run ansible playbook
 * $mainStructure
 * Intro to BASH scripting, CLI variables pushd & dirs -v
 
-##TODO:
+## TODO:
 * Write Ansible playbook to:
   - update system
   - set up various users, their home directories, different Shells
   - create directories for future NFS shares
   - install NFS server
-
+# ######################################################################################
