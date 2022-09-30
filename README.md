@@ -314,4 +314,6 @@ ssh-keygen -t rsa -b 4096
   - set up various users, their home directories, different Shells
   - create directories for future NFS shares
   - install NFS server
+* Add couple of notes from https://danielmiessler.com/study/tcpdump/ to tcpdump section
+* Add homework to each chapter
 # ######################################################################################
