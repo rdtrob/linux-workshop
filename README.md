@@ -21,6 +21,12 @@
 - [Navigation](#navigation)
   - [](#)
   - [](#)
+- [Processes](#processes)
+  - [Pipes](#)
+  - [Sockets](#)
+  - [Unit files](#) # How linux spawns new processes, what headers they have, how they access  system resources and how they communicate with other processes
+  - [](#)
+- [](#)
 
   TODO: 
 
@@ -42,7 +48,7 @@ Debian more.
 Ansible replicates what we'd use in a work environment to deploy IaC
 (infrastructure as code). Put simply, it allows us to automate the installation
 of software and administer servers. And what better way to show the power of auto-
-mation than deploy the workshop setup itself?
+mation than deploy the workshop setup itself? 
 
 ## Requirements
 
@@ -228,7 +234,7 @@ ssh-keygen -t rsa -b 4096
 
 ## Resources
 
-[The Linux Command Line](https://www.linuxcommand.org/tlcl.php) ([Download](https://sourceforge.net/projects/linuxcommand/files/TLCL/19.01/TLCL-19.01.pdf/download)) & Adventures with the Linux Command Line] ([Download](https://sourceforge.net/projects/linuxcommand/files/AWTLCL/21.10/AWTLCL-21.10.pdf/download)) are free books in PDF format, released under the Creative Commons [license](https://creativecommons.org/licenses/by-nc-nd/3.0/).
+[The Linux Command Line](https://www.linuxcommand.org/tlcl.php) ([Download](https://sourceforge.net/projects/linuxcommand/files/TLCL/19.01/TLCL-19.01.pdf/download)) & Adventures with the Linux Command Line ([Download](https://sourceforge.net/projects/linuxcommand/files/AWTLCL/21.10/AWTLCL-21.10.pdf/download)) are free books in PDF format, released under the Creative Commons [license](https://creativecommons.org/licenses/by-nc-nd/3.0/).
 
 ##Itinerary
 * Presentation ( self and students )
