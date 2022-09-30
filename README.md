@@ -71,7 +71,7 @@
     - [cat, sort and uniq](#cat-sort-uniq)
     - [cut, paste and join](#cut-paste-join)
     - [diff and sed](#diff-and-sed)
-- [Shell scripts](#shell-scripts)
+- [Part 4 - Shell scripts](#part-4-shell-scripts)
   - [Format](#format)
   - [Indentation](#indentation)
   - [Keep scripts running](#keep-scripts-running)
