@@ -14,7 +14,6 @@
 ## Table of Contents
 - [Part 1 - SHELL](#part-1-shell)
   - [Learning the Shell](#learning-the-shell)
-    - [Terminal](#terminal)
     - [History](#history)
   - [Navigation](#navigation)
     - [File system tree](#file-system-tree)
@@ -159,27 +158,297 @@ sudo apt-get upgrade
 
 ### Learning the Shell
 
-#### Terminal
+Command line, shell, same thing. Think of it as a program that takes keyboard
+commands and sends them over to the OS to run.
+
+```bash
+[user@hostname ~]$
+[user@hostname ~]#  - the pound sign instead of the dollar sign shows that you're logged in as root
+``` 
 
 #### History
 
+history - prints list of commands run previously by the user
+
 ### Navigation
+
+pwd - print name of current working directory
+
+cd - change directory
+
+ls - list directory contents
 
 #### File system tree
 
+Like Windows and Unix, Linux organizez files in a hierarchical directory structure. Think of a tree
+that starts with the root directory. It contains files and subdirectories, which in turn contain more
+files and subdirectories.
+
 #### Pathnames
+
+Absolute or relative
+
+Absolute pathnames begin with the root directory and follows the tree branch by branch until the path
+to the desired directory or file is completed.
+
+```bash
+[user@hostname ~]$ cd /usr/bin
+[user@hostname bin]$ pwd
+/usr/bin
+[user@hostname bin]$ ls
+# listing of files
+```
+
+> NOTE: See that by changing the directory to /usr/bin the shell prompt changed? It displays the name of the working directory by default.
+
+Relative pathnames start from the working directory using special characters.
+
+. - refers to the working directory
+.. - refers to the working directory's parent directory
+
+Here's an example:
+
+```bash
+[user@hostname ~]$ cd /usr/bin
+[user@hostname bin]$ pwd
+/usr/bin
+[user@hostname bin]$ cd /usr
+[user@hostname usr]$ pwd
+/usr
+[user@hostname bin]$ cd ..
+[user@hostname usr]$ pwd
+/usr
+[user@hostname bin]$ cd ~
+[user@hostname ~]$ pwd
+/home/user
+```
+
+> NOTE: Two different methods with identical results. Which one should you use? The one that requires the least typing.
+
+"~", "~user", "cd" - they all change the working directory to your home directory
+"cd -" - changes the working directory to the previous working directory
 
 ### Exploring the system
 
+ls - list directory contents
+
+file - determine file type
+
+less - view file contents
+
+tree - prints a tree-like structure of the directory
+
 #### Less is more
+
+The "less" program was designed as an improved replacement of an older program called "more". It's name is a play on
+the phrase "less is more". It allows easier viewing of long text documents in a page by page manner, both forward and
+backward.
 
 #### Links
 
+As you look around you'll find files and directories that point to others. This is a special kind of file called a
+symbolic link (also known as soft link or symlink), a very useful feature.
+
+Picture a program that requires the use of a shared resource of some kind, contained in a file called "foo", but "foo"
+has frequent version changes. You could include the version number in the filename but this presents a problem, if you
+change the name you have to track down every program that might use it and change it to look for a new resource name
+every time a new version gets installed.
+
+There are also hard links, these allow files to have multiple names, but they do it differently. Here are two important
+limitations that they have:
+* it can't reference a file outside its own filesystem, so it can't reference a file that is not on the same partition
+* it can't reference a directory
+
+```bash
+[user@hostname ~]$ ls -lahi /lib
+lrwxrwxrwx 1 root root 7 Dec 7 2022 /lib -> /usr/lib
+```
+
+```bash
+[me@hostname ~]$ ln file file-hard
+[me@hostname ~]$ ln -s file file-sym
+[me@hostname ~]$ ls
+file file-hard file-sym
+```
+
 ### Commands
+
+Commands can be executables written in various programming languages and compiled, shell builtins (e.g. cd), shell 
+functions and aliases.
+
+type - indicate how a command is interpreted
+
+which - display which executable will be run
+
+help - get help for shell builtins
+
+man - display a command's manual page
+
+apropos - display a list of appropriate commands
+
+info - display a command's info entry
+
+alias - create an alias for a command
+
+whatis - display one-liner manual page descriptions
 
 #### Identifying commands
 
+type - display a command's type
+
+```bash
+[me@hostname ~]$ type type
+type is a shell builtin
+[me@hostname ~]$ type ls
+ls is aliased to `ls --color=tty`
+[me@hostname ~]$ type cp
+cp is /bin/cp
+```
+
+```bash
+[me@hostname ~]$ apropos partition
+addpart (8) - simple wrapper around the "add partition"...
+all-swaps (7) - event signalling that all swap partitions...
+cfdisk (8) - display or manipulate disk partition table
+cgdisk (8) - Curses-based GUID partition table (GPT)...
+delpart (8) - simple wrapper around the "del partition"...
+fdisk (8) - manipulate disk partition table
+fixparts (8) - MBR partition table repair utility
+```
+
+> NOTE: Special mention should be made to the most brutal man page of them all, the one for "bash".
+
 #### Redirection and pipes
+
+One of the coolest features of the command line, I/O redirection. "I/O" stands for input/output and
+it allows us to redirect the input and output of commands to and from files, as well as connect mul-
+tiple commands together.
+
+cat - concatenate files
+
+sort - sort lines of text
+
+uniq - report or omit repeated lines
+
+grep - print lines matching a pattern
+
+wc - print newline, word and byte counts for each file
+
+head - output the first part of a file
+
+tail - output the last part of a file
+
+tee - read from standard input and write to standard output and files
+
+Standard input, output and error; many commands produce output of some kind, usually of two types:
+* the program's result; the data it's designed to produce
+* status and error messages that tell us how the program is doing
+
+I/O redirection allows us to redefine where the standard output goes using redirectors such as ">".
+
+```bash
+[me@hostname ~]$ ls -l /usr/bin > ls-output.txt
+[me@hostname ~]$ ls -l /bin/usr > ls-output.txt
+```
+
+Redirecting standard error lacks the ease of a dedicated operator. To redirect STDERR we must refer to
+its file descriptor. A program can produce output on any of several numbered file streams. While we
+have referred to the first three of these file streams as standard input, output and error, the shell
+references them internally as file descriptors 0, 1 and 2 respectively.
+
+```bash
+[me@hostname ~]$ ls -l /bin/usr 2> ls-error.txt
+[me@hostname ~]$ ls -l /bin/usr > ls-output.txt 2>&1
+[me@hostname ~]$ ls -l /bin/usr 2> /dev/null
+```
+
+> NOTE: /dev/null in Unix culture is called the bit bucket.
+
+```bash
+[me@hostname ~]$ cat movie.mpeg.0* > movie.mpeg
+[me@hostname ~]$ cat
+```
+
+> NOTE: if run without arguments, the "cat" command does exactly what it should, it reads from STDIN (the
+keyboard in this case) and it waits for you to press Enter. Try it.
+
+Pipelines allow reading data from STDIN and sending it to STDOUT via the pipe "|" operator (vertical bar).
+
+```bash
+command1 | command2
+[me@hostname ~]$ ls -l /usr/bin | less
+```
+
+> - redirection operator, connects a command with a file
+| - pipeline operator, connects the output of one command with the input of a second command
+
+> NOTE: By misusing the redirection operator (e.g. "command1 > command2") you can get some really bad outcomes.
+
+#### Expansion & quoting
+
+Each time you type and run a command, bash performs several substitutions on the text before it carries out the
+command.
+
+```bash
+[me@hostname ~]$ echo this is a test
+this is a test
+
+[me@hostname ~]$ echo *
+Desktop Documents ls-output.txt Music Pictures Public Templates
+```
+
+echo - display a line of text
+
+echo D*
+echo *s
+echo [[:upper:]]*
+echo /usr/*/share
+echo ~
+echo $((2+2))
+echo $(($(5**2))*3
+echo Five divided by two equals $((5/2))
+echo with $((5%2)) left over.
+
+```bash
+[me@hostname ~]$ cd Photos
+[me@hostname Photos]$ mkdir {2007..2009}-{01..12}
+[me@hostname Photos]$ ls
+2007-01 2007-07 2008-01 2008-07 2009-01 2009-07
+2007-02 2007-08 2008-02 2008-08 2009-02 2009-08
+2007-03 2007-09 2008-03 2008-09 2009-03 2009-09
+2007-04 2007-10 2008-04 2008-10 2009-04 2009-10
+2007-05 2007-11 2008-05 2008-11 2009-05 2009-11
+2007-06 2007-12 2008-06 2008-12 2009-06 2009-12
+```
+
+echo $USER
+echo $(ls)
+ls -l $(which cp)
+
+file $(ls -d /usr/bin/* | grep zip)
+
+Now that you've seen expansions, how about we control them?
+
+```bash
+[me@hostname ~]$ echo this is a     test
+this is a test
+
+[me@linuxbox ~]$ echo The total is $100.00
+The total is 00.00
+
+[me@linuxbox ~]$ echo The total is \$100.00
+The total is $100.00
+```
+
+Escape characters:
+
+\a - bell
+\b - backspace
+\n - newline
+\r - carriage return
+\t - tab
+
+sleep 10; echo "Time's up" $'\a'
 
 ### Permissions
 
