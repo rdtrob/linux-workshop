@@ -203,8 +203,8 @@ to the desired directory or file is completed.
 
 Relative pathnames start from the working directory using special characters.
 
-. - refers to the working directory
-.. - refers to the working directory's parent directory
+"." - refers to the working directory
+".." - refers to the working directory's parent directory
 
 Here's an example:
 
@@ -225,7 +225,7 @@ Here's an example:
 
 > NOTE: Two different methods with identical results. Which one should you use? The one that requires the least typing.
 
-"~", "~user", "cd" - they all change the working directory to your home directory
+"~", "~user", "cd" - they all change the working directory to your home directory <br />
 "cd -" - changes the working directory to the previous working directory
 
 ### Exploring the system
@@ -379,7 +379,7 @@ command1 | command2
 [me@hostname ~]$ ls -l /usr/bin | less
 ```
 
-">" - redirection operator, connects a command with a file
+">" - redirection operator, connects a command with a file  <br />
 "|" - pipeline operator, connects the output of one command with the input of a second command
 
 > NOTE: By misusing the redirection operator (e.g. "command1 > command2") you can get some really bad outcomes.
@@ -399,15 +399,15 @@ Desktop Documents ls-output.txt Music Pictures Public Templates
 
 echo - display a line of text
 
-#echo D*
-#echo *s
-#echo [[:upper:]]*
-#echo /usr/*/share
-#echo ~
-#echo $((2+2))
-#echo $(($(5**2))*3
-#echo Five divided by two equals $((5/2))
-#echo with $((5%2)) left over.
+echo D* <br />
+echo *s <br />
+echo [[:upper:]]* <br />
+echo /usr/*/share <br />
+echo ~            <br />
+echo $((2+2))     <br />
+echo $(($(5**2))*3  <br />
+echo Five divided by two equals $((5/2))  <br />
+echo with $((5%2)) left over. <br />
 
 ```bash
 [me@hostname ~]$ cd Photos
