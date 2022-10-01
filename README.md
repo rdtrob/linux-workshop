@@ -203,7 +203,7 @@ to the desired directory or file is completed.
 
 Relative pathnames start from the working directory using special characters.
 
-"." - refers to the working directory
+"." - refers to the working directory <br />
 ".." - refers to the working directory's parent directory
 
 Here's an example:
@@ -421,11 +421,11 @@ echo with $((5%2)) left over. <br />
 2007-06 2007-12 2008-06 2008-12 2009-06 2009-12
 ```
 
-#echo $USER
-#echo $(ls)
-#ls -l $(which cp)
+echo $USER  <br />
+echo $(ls)  <br />
+ls -l $(which cp) <br />
 
-#file $(ls -d /usr/bin/* | grep zip)
+file $(ls -d /usr/bin/* | grep zip)
 
 Now that you've seen expansions, how about we control them?
 
@@ -442,10 +442,10 @@ The total is $100.00
 
 Escape characters:
 
-"\a" - bell
-"\b" - backspace
-"\n" - newline
-"\r" - carriage return
+"\a" - bell <br />
+"\b" - backspace  <br />
+"\n" - newline  <br />
+"\r" - carriage return  <br />
 "\t" - tab
 
 sleep 10; echo "Time's up" $'\a'
