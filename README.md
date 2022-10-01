@@ -24,7 +24,7 @@
   - [Commands](#commands)
     - [Identifying commands](#identifying-commands)
     - [Redirection and pipes](#redirection-and-pipes)
-    - [Expansion & quoting](#expansion-and-quoting)
+    - [Expansion and quoting](#expansion-and-quoting)
   - [Permissions](#permissions)
     - [Owners, groups & others](#owners-groups-and-others)
     - [RWX, identities](#rwx-identities)
@@ -46,7 +46,7 @@
     - [Search and replace](#search-and-replace)
     - [Editing multiple files](#editing-multiple-files)
     - [Customizing VIM](#customizing-vim)
-    - [Tips & Tricks](#tips-and-tricks)
+    - [Tips & Tricks](#tips-&-tricks)
   - [Prompt](#prompt)
     - [Customizing bashrc](#customizing-bashrc)
     - [Build logic in your configs](#build-logic-in-your-configs)
@@ -55,7 +55,7 @@
   - [Package Managers](#package-managers)
     - [Common tasks](#common-tasks)
   - [Searching for files](#searching-for-files)
-    - [Locate & find](#locate-and-find)
+    - [Locate & find](#locate-&-find)
     - [xargs](#xargs)
   - [Networking](#networking)
     - [Ping, traceroute, netstat](#ping-traceroute-netstat)
@@ -163,8 +163,10 @@ commands and sends them over to the OS to run.
 
 ```bash
 [user@hostname ~]$
-[user@hostname ~]#  - the pound sign instead of the dollar sign shows that you're logged in as root
+[user@hostname ~]#
 ``` 
+
+> NOTE: The pound sign instead of the dollar sign shows that you're logged in as root
 
 #### History
 
@@ -384,7 +386,7 @@ command1 | command2
 
 > NOTE: By misusing the redirection operator (e.g. "command1 > command2") you can get some really bad outcomes.
 
-#### Expansion & quoting
+#### Expansion and quoting
 
 Each time you type and run a command, bash performs several substitutions on the text before it carries out the
 command.
@@ -399,15 +401,15 @@ Desktop Documents ls-output.txt Music Pictures Public Templates
 
 echo - display a line of text
 
-echo D* <br />
-echo *s <br />
-echo [[:upper:]]* <br />
-echo /usr/*/share <br />
-echo ~            <br />
-echo $((2+2))     <br />
-echo $(($(5**2))*3  <br />
+echo D*                                   <br />
+echo *s                                   <br />
+echo [[:upper:]]*                         <br />
+echo /usr/*/share                         <br />
+echo ~                                    <br />
+echo $((2+2))                             <br />
+echo $(($(5**2))*3                        <br />
 echo Five divided by two equals $((5/2))  <br />
-echo with $((5%2)) left over. <br />
+echo with $((5%2)) left over.             <br />
 
 ```bash
 [me@hostname ~]$ cd Photos
