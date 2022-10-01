@@ -82,7 +82,7 @@
   - [Format](#format)
   - [Indentation](#indentation)
   - [Keep scripts running](#keep-scripts-running)
-  - [VIm for script writing](#vim-for-script-writing)
+  - [VIm for scripting ](#vim-for-scripting)
   - [Shell scripts in .bashrc](#shell-scripts-in-bashrc)
   - [If tests and parantheses](#if-tests-and-parantheses)
   - [Read IFS](#read-ifs)
@@ -141,7 +141,6 @@ on your physical one. This brings security and convenience in certain scenarios.
 
 ### VM Setup
 
-> TODO: Maybe elaborate a bit on the steps ? (or KISS)
 Create a virtual machine with two CPU cores, 2048 MB of RAM, a 16GB OS disk and one 16GB data
 disk. Mount the downloaded Debian iso you've downloaded as the virtual disk drive. Install the OS.
 
@@ -156,13 +155,124 @@ sudo apt-get upgrade
 
 > NOTE: This will take some time.
 
-## Setup
+## Part 1 - SHELL
 
-### Environment
+### Learning the Shell
+
+#### Terminal
+
+#### History
+
+### Navigation
+
+#### File system tree
+
+#### Pathnames
+
+### Exploring the system
+
+#### Less is more
+
+#### Links
+
+### Commands
+
+#### Identifying commands
+
+#### Redirection and pipes
+
+### Permissions
+
+#### Owners, groups & others
+
+#### RWX, identities
+
+### Processes
+
+#### How a process works
+
+#### Sockets and signals
+
+#### Unit files
+
+#### Process spawning
+
+#### Headers
+
+#### Accessing system resources
+
+#### Inter-process communication
+
+## Part 2 - Configuration & Environment
 
 Why set up an environment? 
 
-#### .bashrc
+### Environment
+
+#### What, how and why
+
+#### Files and text editors
+
+### Introduction to Vi/VIm
+
+#### Editing Modes
+
+#### Movement
+
+#### Search and replace
+
+#### Editing multiple files
+
+#### Customizing VIM
+
+```vim
+" We use this check because Some distributions come by default with vim-tiny,
+"  a stripped down version of VIm.
+if has("eval")
+  let skip_defaults_vim = 1
+endif
+
+" automatically indent new lines
+set autoindent
+" automatically write files when changing between files - Autosave
+set autowrite
+" turn col and row positions on in bottom right section
+set ruler
+" show command and insert mode
+set showmode
+" set tab value
+set tabstop=2
+set smartindent
+set textwidth=72
+" disable relative line numbers, comment to sample it
+set norelativenumber
+" highlight search hits
+set hlsearch
+set incsearch
+set linebreak
+" stop complaints about switching buffers with unsaved changes
+set hidden
+" set command history
+set history=1000
+" enable faster scrolling
+set ttyfast
+" allows Vim to sense filetype
+set filetype plugin on
+set background=dark
+
+" > NOTE: Like in bash scripts, we can write logic into the
+"          .vimrc and vimscript in general
+if v:version >= 800
+  " stop vim from silently messing with files that it shouldn't mess with
+  set nofixedofline
+endif
+```
+
+#### Tips & Tricks
+
+### Prompt
+
+#### Customizing bashrc
 
 ```bash
 #!/bin/bash
@@ -241,59 +351,91 @@ alias diff='diff --color'
 
 #
 # --------------------------- bash config END ------------------------
-
 ```
 
-#### .vimrc
+#### Build logic in your configs
 
-```vim
-" We use this check because Some distributions come by default with vim-tiny,
-"  a stripped down version of VIm.
-if has("eval")
-  let skip_defaults_vim = 1
-endif
+## Part 3 - Common tasks and tools
 
-" automatically indent new lines
-set autoindent
-" automatically write files when changing between files - Autosave
-set autowrite
-" turn col and row positions on in bottom right section
-set ruler
-" show command and insert mode
-set showmode
-" set tab value
-set tabstop=2
-set smartindent
-set textwidth=72
-" disable relative line numbers, comment to sample it
-set norelativenumber
-" highlight search hits
-set hlsearch
-set incsearch
-set linebreak
-" stop complaints about switching buffers with unsaved changes
-set hidden
-" set command history
-set history=1000
-" enable faster scrolling
-set ttyfast
-" allows Vim to sense filetype
-set filetype plugin on
-set background=dark
+### Package Managers
 
-" > NOTE: Like in bash scripts, we can write logic into the
-"          .vimrc and vimscript in general
-if v:version >= 800
-  " stop vim from silently messing with files that it shouldn't mess with
-  set nofixedofline
-endif
-```
+#### Common tasks
 
-### SSH Keys
+### Searching for files
 
-```
-ssh-keygen -t rsa -b 4096
-```
+#### Locate & find
+
+#### xargs
+
+### Networking
+
+#### Ping, traceroute, netstat
+
+#### SFTP, wget
+
+#### SSH
+
+#### NFS
+
+#### tcpdump
+
+### Archiving and backup
+
+#### gzip
+
+#### tar
+
+#### zip
+
+#### File synchronization
+
+### Regular Expressions
+
+#### grep
+
+#### Logic, any and negation
+
+#### Quantifiers
+
+#### find, locate and less
+
+### Text processing
+
+#### cat, sort and uniq
+
+#### cut, paste and join
+
+#### diff and sed
+
+## Part 4 - Shell scripts
+
+### Format
+
+### Indentation
+
+### Keep scripts running
+
+### VIm for scripting
+
+### Shell scripts in .bashrc
+
+### If tests and parantheses
+
+### Read IFS
+
+### Loops and breaks
+
+### Strings and numbers
+
+### Troubleshooting
+
+### Patterns with case
+
+### Arrays
+
+#### Creating, assigning and accessing values
+
+#### Array operations
 
 ## Resources
 
@@ -302,8 +444,8 @@ ssh-keygen -t rsa -b 4096
 
 # ######################################################################################
 ## Itinerary
+* Debian ISO DL & VirtualBox Install
 * Presentation ( self and students )
-* Debian ISO DL \& VirtualBox Install ( via chocolatey (?))
 * System update, install Ansible, DL & run ansible playbook
 * $mainStructure
 * Intro to BASH scripting, CLI variables pushd & dirs -v
