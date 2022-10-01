@@ -379,8 +379,8 @@ command1 | command2
 [me@hostname ~]$ ls -l /usr/bin | less
 ```
 
-> - redirection operator, connects a command with a file
-| - pipeline operator, connects the output of one command with the input of a second command
+">" - redirection operator, connects a command with a file
+"|" - pipeline operator, connects the output of one command with the input of a second command
 
 > NOTE: By misusing the redirection operator (e.g. "command1 > command2") you can get some really bad outcomes.
 
@@ -399,15 +399,15 @@ Desktop Documents ls-output.txt Music Pictures Public Templates
 
 echo - display a line of text
 
-echo D*
-echo *s
-echo [[:upper:]]*
-echo /usr/*/share
-echo ~
-echo $((2+2))
-echo $(($(5**2))*3
-echo Five divided by two equals $((5/2))
-echo with $((5%2)) left over.
+#echo D*
+#echo *s
+#echo [[:upper:]]*
+#echo /usr/*/share
+#echo ~
+#echo $((2+2))
+#echo $(($(5**2))*3
+#echo Five divided by two equals $((5/2))
+#echo with $((5%2)) left over.
 
 ```bash
 [me@hostname ~]$ cd Photos
@@ -421,11 +421,11 @@ echo with $((5%2)) left over.
 2007-06 2007-12 2008-06 2008-12 2009-06 2009-12
 ```
 
-echo $USER
-echo $(ls)
-ls -l $(which cp)
+#echo $USER
+#echo $(ls)
+#ls -l $(which cp)
 
-file $(ls -d /usr/bin/* | grep zip)
+#file $(ls -d /usr/bin/* | grep zip)
 
 Now that you've seen expansions, how about we control them?
 
@@ -442,11 +442,11 @@ The total is $100.00
 
 Escape characters:
 
-\a - bell
-\b - backspace
-\n - newline
-\r - carriage return
-\t - tab
+"\a" - bell
+"\b" - backspace
+"\n" - newline
+"\r" - carriage return
+"\t" - tab
 
 sleep 10; echo "Time's up" $'\a'
 
