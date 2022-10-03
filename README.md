@@ -50,9 +50,9 @@
   - [Searching for files](#searching-for-files)
     - [Locate & find](#locate-&-find)
     - [xargs](#xargs)
+  - [Intro to Filesystems](#intro-to-filesystems)
   - [Networking](#networking)
     - [Ping, traceroute, netstat](#ping-traceroute-netstat)
-    - [SFTP, wget](#sftp-wget)
     - [SSH](#ssh)
     - [NFS](#nfs)
     - [tcpdump](#tcpdump)
@@ -938,35 +938,274 @@ done
 
 ### Package Managers
 
+Most people are probably used to Windows, as their first experience with a computer. Installing software tends
+to become a PITA pretty fast, searching for the software you want, making sure you get the right version and 
+keeping it up to date. How does Linux do it? Package managers. Package management is a method of installing
+and maintaining software on systems.
+
+Different distributions use different packaging systems, and as a general rule packages intended for one 
+distribution aren't compatible with other distributions. Most distributions fall into one of two camps:
+* .deb (Debian and Ubuntu, Raspbian, Linux Mint)  
+* .rpm (RedHat, Fedora, CentOS, OpenSUSE)
+
 #### Common tasks
+
+Some common operations that can be performed with the CLI package management tools are searching, installing,
+updating and removing packages.
+
+apt-cache search SEARCH_STRING  
+apt-get update; apt-get install emacs  
+apt-get remove emacs  
+dpkg -i PACKAGE_FILE  
+dpkg -l  
+dpkg -s PACKAGE_NAME  
+dpkg --status emacs
 
 ### Searching for files
 
 #### Locate & find
 
+locate - find files by name
+
+find - search for files in a directory hierarchy
+
+touch - change file times
+
+stat - display file or file system status
+
+locate bin/zip  
+locate zip | grep bin  
+find ~  
+find ~ | wc -l  
+find ~ -type d | wc -l  
+
+> NOTE: find's argument are: b(block special device file), c(character special device file), d(directory),
+f(regular file), l(symbolic link).
+
+Here's a more complex find:
+
+```bash
+find ~ -type f -name "*.JPG" -size +1M | wc -l
+```
+
+Operators:
+-and - match if the tests on both sides of the operator are true, shortened to -a  
+-or - match if a test on either side is true, shortened to -o  
+( ) - groups tests and operators together to form larger expressions
+
+Example:
+```bash
+find ~ ( -type f -not -perms 0600 ) -or ( -type d -not -perms 0700 )
+```
+
+find AND/OR logic:
+
+Results of expr1  Operator    expr2 is...  
+True              -and        Always performed  
+False             -and        Never performed  
+True              -or         Never performed  
+False             -or         Always performed
+
+Try to run these:
+```bash
+find ~ -type f -and -name '*.bak' -and -print  
+find ~ -print -and -type f -and -name '*.bak'  
+find ~ -type f -name 'foo*' -ok ls -l '{}' ';'  
+find ~ -type f -name 'foo*' -exec ls -l '{}' ';'
+```
+
 #### xargs
+
+The xargs command performs an interesting function. It accepts input from STDIN and converts it
+into an argument list for a specified command. We could use it like this:
+
+```bash
+find ~ -type f -name 'foo*' -print | xargs ls -l
+```
+
+> NOTE: Here we can see the output of the find command piped into xargs, which in turn constructs
+an argument list for the ls command then executes it.
+
+> NOTE: Dealing with funny names. Unix-like systems allow embedded spaces (even newlines) in filenames.
+This can cause problems for programs such as xargs that construct argument lists. An embedded space
+will be treated as a delimiter, and the resulting command will interpret each space-separated word
+as a separate argument. To overcome this, find and xargs allow the optional use of a null character
+as a separator.
+
+```bash
+find ~ -iname '*.jpg' -print0 | xargs --null ls -l
+```
+
+> NOTE: Using this method we can ensure that all files, even those containing embedded spaces in their
+names are handled correctly.
+
+```bash
+[me@hostname ~]$ mkdir -p playground/dir-{001..100}  
+[me@hostname ~]$ touch playground/dir-{001..100}/file-{A..Z}  
+[me@hostname ~]$ find playground -type f -name 'file-A'  
+[me@hostname ~]$ find playground -type f -name 'file-A' | wc -l  
+[me@hostname ~]$ touch playground/timestamp  
+[me@hostname ~]$ stat playground/timestamp  
+[me@hostname ~]$ touch playground/timestamp  
+[me@hostname ~]$ find playground -type f -name 'file-B' -exec touch '{}' ';'  
+[me@hostname ~]$ find playground -type f -newer playground/timestamp  
+[me@hostname ~]$ find playground \( -type f -not -perm 0600 \) -or \( -type d -not -perm 0700 \)  
+[me@hostname ~]$ find playground \( -type f -not -perm 0600 -exec chmod 0600 '{}' ';' \) -or \( -type d -not -perm 0700 -exec chmod
+0700 '{}' ';' \)
+```
+
+Options:
+-depth - direct find to process a directory's files before the directory itself  
+-maxdepth levels - set the maximum number of levels that find will descend into a directory tree when performing tests and actions  
+-mindepth levels - set minimum number of levels that find will descend into a directory tree before applying tests and actions  
+-mount - direct find not to traverse directories that are mounted on other file systems  
+-noleaf - direct find not to optimize its search based on the assumption that it is searching a Unix-like file system. Needed when scanning DOS/Windows file systems and CD-ROMs
+
+### Intro to Filesystems
+
+lsblk  
+df -h  
+sudo mkdir -p /mnt/datastore  
+sudo fdisk /dev/sdb  
+
+> NOTE: Create a new partition ("p"), list the partition types ("l"), change partition's system id ("t"),
+select partition ("1"), set it to type Linux ("83") followed by a save and exit ("w").
+
+sudo mkfs -t ext4 /dev/sdb1  
+sudo mount /dev/sdb1 /mnt/datastore  
+sudo fsck /dev/sdb1  
+
+While most commands mentioned above make sense, some might be a bit vague the way they're named:
+lsblk - list block devices  
+df - report file system space usage  
+fdisk - manipulates disk partition table  
+mkfs - make filesystem  
+fsck - check and repair Linux filesystems
+
+While we usually think of data on our computers as organized into files, it's also possible to think of
+said data in "raw" form. You can copy blocks of data with "dd".
+
+> NOTE: Although the name is derived from "data definition", dd has another alias: destroyer of disks.
+Like other commands such as "rm", be very careful when using this tool. Double-check your input and
+output before running this command.
+
+```bash
+dd if=input_file of=output_file [bs=block size [count=blocks]]
+```
+
+Or more specific examples:
+dd if=/dev/sdb of=/dev/sdc  
+dd if=debian.img of=/dev/sdc  
+dd if=/dev/cdrom of=debian.iso  
+
+When writing .iso or .img files you can check to see if the copy was completed successfully by making
+checksums of the input and output and comparing the two.
+
+```bash
+md5sum debian.iso
+34e354760f9bb7fbf85c96f6a3f94ece debian.iso
+md5sum /dev/cdrom
+34e354760f9bb7fbf85c96f6a3f94ece /dev/cdrom
+```
 
 ### Networking
 
+This is going to assume a little understanding of networking. If not, you should become familiarized
+with the following concepts:
+* Internet protocol (IP) address  
+* Host and domain name  
+* Uniform resource identifier (URI)
+
 #### Ping, traceroute, netstat
 
-#### SFTP, wget
+ping - send an ICMP ECHO_REQUEST to network hosts  
+traceroute - print the route packets trace to a network host  
+netstat - print network connections, routing tables, interface statistics, masquerade connections and
+multicase memberships  
+ip - show / manipulate routing, devices, policy routing and tunnels  
+
+The most basic network command is ping. It sends a special network packet (ICMP ECHO_REQUEST) to the
+specified host and if said host is online and reachable, a response is sent back.
+
+ping 1.1.1.1
+
+Traceroute lists all the "hops" network traffic takes to get from the local system to a specified host.
+
+traceroute fcc.org
+
+Netstat is used to examine various network settings and statistics. Through the use of its many options,
+we can look at a variety of features in our network setup.
+
+netstat -ie  
+netstat -r
+
+Ip is a multi-purpose network configuration tool that makes use of the full range networking features
+available in modern Linux kernels. It replaces the now deprecated "ifconfig" program.
+
+ip a
 
 #### SSH
 
+ssh - OpenSSH SSH client (remote login program)
+
+SSH consists of two parts, an SSH servers running on the remote host, listening to incoming connections
+(port 22 by default) and an SSH client on the local system to communicate with the remote server.
+SSH authenticates that the remote host is who it says it is (preventing main-in-the-middle attacks) and
+it encrypts all of the communications between the two hosts.
+
+```bash
+ssh remote-host  
+ssh user@remote-host  
+ssh remote-host free  
+ssh remote-host 'ls *' > dirlist.txt  
+```
+
+Tunneling with SSH. One of the most common uses is allowing the X Window system traffic to be transmitted.
+On a system running an X server (system displaying a GUI), it's possible to launch and run an X client
+program (graphical application) on a remote system and have its display appear on the local one.
+
+```bash
+[me@hostname ~]$ ssh -X remote-host
+user@remote-host's password:
+Last login: Mon Oct 03 16:23:09 2022
+[me@remote-host ~]$ xload
+```
+
+> NOTE: Once the xload command is executed on the remote system, its window appears on the local system.
+On some systems, you may need to use the "-Y" option rather than the "-X" option.
+
 #### NFS
+
+nfs - internet standard protocol that allows file sharing between systems on a local network
+
+server:path /mountpoint fstype option,option,... 0 0
 
 #### tcpdump
 
+#### rsync
+
+tcpdump - dump traffic on a network
+
 ### Archiving and backup
+
+One of the primary tasks of a system's administrator is keeping the system's data secure. One way
+this is done is by performing timely backups.
 
 #### gzip
 
+gzip - tool that compresses or expands files
+
 #### tar
+
+tar - tape archiving utility
 
 #### zip
 
+zip - tool that packages and compresses files
+
 #### File synchronization
+
+rsync - remote file and directory synchronization
 
 ### Regular Expressions
 
