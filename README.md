@@ -26,8 +26,6 @@
     - [Redirection and pipes](#redirection-and-pipes)
     - [Expansion and quoting](#expansion-and-quoting)
   - [Permissions](#permissions)
-    - [Owners, groups & others](#owners-groups-and-others)
-    - [RWX, identities](#rwx-identities)
   - [Processes](#processes)
     - [How a process works](#how-a-process-works)
     - [Signals](#signals)
@@ -449,29 +447,6 @@ sleep 10; echo "Time's up" $'\a'
 
 ### Permissions
 
-#### Owners, groups & others
-
-#### RWX, identities
-
-### Processes
-
-Linux, in the Unix tradition differs, from MS-DOS and Windows. It's not only a
-multitasking system, but also multi-user.
-
-id - display user identity
-
-chmod - change a file's mode
-
-umask - set default file permissions
-
-su - run a shell as another user
-
-chown - change a file's owner
-
-chgrp - change a file's group ownership
-
-passwd - change a user's password
-
 If you've tried to cat the "/etc/shadow" file (or others in "/etc" you might have
 noticed that you didn't have permission to read it.
 
@@ -507,6 +482,25 @@ sudo - execute a command as another user
 [me@hostname ~]$ sudo apt-get update
 Password:
 ```
+
+### Processes
+
+Linux, in the Unix tradition differs, from MS-DOS and Windows. It's not only a
+multitasking system, but also multi-user.
+
+id - display user identity
+
+chmod - change a file's mode
+
+umask - set default file permissions
+
+su - run a shell as another user
+
+chown - change a file's owner
+
+chgrp - change a file's group ownership
+
+passwd - change a user's password
 
 #### How a process works
 
