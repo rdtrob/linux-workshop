@@ -946,13 +946,6 @@ alias diff='diff --color'
 
 
 # ######################################################################################
-## Itinerary
-* Debian ISO DL & VirtualBox Install
-* Presentation ( self and students )
-* System update, install Ansible, DL & run ansible playbook
-* $mainStructure
-* Intro to BASH scripting, CLI variables pushd & dirs -v
-
 ## TODO:
 * Write Ansible playbook to:
   - update system
