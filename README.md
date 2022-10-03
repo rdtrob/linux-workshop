@@ -856,7 +856,83 @@ alias diff='diff --color'
 # --------------------------- bash config END ------------------------
 ```
 
+Give it a try, you can set something simple by yourself. It's encouraged.
+
+Here's some escape sequences to set the background for example:
+
+```bash
+Sequence    Background Color  Sequence    Background Color  
+\033[0;40m  Black             \033[0;44m  Blue  
+\033[0;41m  Red               \033[0;45m  Purple  
+\033[0;42m  Green             \033[0;46m  Cyan  
+\033[0;43m  Brown             \033[0;47m  Light gray
+```
+
+What can you do with these? Here's an example:
+```bash
+[me@hostname ~]$ PS1="\[\033[0;31m\]<\u@h \W>\$\[\033[0m\] "  # What does this to?
+
+[me@hostname ~]$ PS1="\[\033[0;31m\]<\u@\h \W>\$\[\033[0m\] " # What about this?
+```
+
+This might seem complicated but let's split it in parts to better showcase what each part does.
+
+PS1="" - declaration  
+\033[0;31m - set Red  
+<\u@\h \W>\$ - prompt string  
+\033[0m - turn off color  
+
+Obviously, if you want to save your changes to the prompt, add them to your .bashrc
+To do so, add these two lines to your .bashrc file, like so:
+
+```bash
+PS1="\[\033[s\033[0;0H\033[0;41m\033[K\033[1;33m\t\033[0m\033[u\]<\u@\h \W>\$ "
+export PS1
+```
+
 #### Build logic in your configs
+
+Say you want to better organize your environment. You have a separate file with aliases, let's call
+it "00-aliases.bash" and you want to source it if it exists. What can you do?
+
+You could do it the old fashioned way, and just add "source 00-aliases.bash" to your .bashrc file.
+
+But there's a better way:
+
+```bash
+if [ -f /home/$USER/.dotfiles/00-aliases.bash ]; then
+  source /home/$USER/.dotfiles/00-aliases.bash
+else
+  print "404: /home/$USER/.dotfiles/00-aliases.bash not found."
+fi
+```
+
+This translates to:
+```bash
+if file 00-aliases.bash exists then
+  source it
+else
+  print 404: file 00-aliases.bash not found.
+end if
+```
+
+To use this principle, create a file 00-aliases.bash as shown above, and set .bashrc to import it:
+
+```bash
+# in your .bashrc add:
+for f in $HOME/.dotfiles/00-aliases.bash; do
+  . $f
+done
+```
+
+To explain what this does, here's the for loop written in human readable language:
+```bash
+for every file that ends in .bash found in /home/.dotfiles do
+  source 
+done
+```
+
+> NOTE: We've set a variable f (file) and called it via "$f". This trick allows you to do more complex things.
 
 ## Part 3 - Common tasks and tools
 
