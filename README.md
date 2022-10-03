@@ -439,10 +439,10 @@ The total is $100.00
 
 Escape characters:
 
-"\a" - bell <br />
-"\b" - backspace  <br />
-"\n" - newline  <br />
-"\r" - carriage return  <br />
+"\a" - bell  
+"\b" - backspace  
+"\n" - newline  
+"\r" - carriage return  
 "\t" - tab
 
 sleep 10; echo "Time's up" $'\a'
@@ -491,9 +491,9 @@ This is because as a regular user, you don't have permission to read the content
 ```
 
 "-" - regular file  
-"d" - directory
-"l" - symbolic link
-"c" - character special file (e.g. /dev/null)
+"d" - directory  
+"l" - symbolic link  
+"c" - character special file (e.g. /dev/null)  
 "b" - block special file (e.g. DVD drive)
 
 > NOTE: With symbolic links, the file attributes are always "rwxrwxrwx", these are dummy values. The real file attributes are those of the file the symlink is pointing to.
@@ -636,7 +636,7 @@ force bash to reread the modified .bashrc using the source command.
 The reason Vi/VIm were chosen is because of how wide-spread they are. Old networking gear? Runs vi. Modern Linux
 OS? Runs both. Well, that and I like it.
 
-":q" - quit
+":q" - quit  
 ":q!" - quit and ignore changes made to the buffer or file
 
 > NOTE: If you get lost in Vi, try pressing Esc twice then try exiting via :q
@@ -698,8 +698,7 @@ y20G - From the current line to the twentieth line of the file
 :%s/oldText/newText/g
 
 : - colon character starts an ex command  
-% - specifies range of lines for the operation. % is a shortcut meaning from the first line to the last  
-  - alternatively the range could have been 1,5  
+% - specifies range of lines for the operation. % is a shortcut meaning from the first line to the last. Alternatively the range could have been 1,5  
 s - specifies the operation (substitution in this case)  
 /oldText/newText/ - search and replacement pattern  
 g - global, without specifying it, only the first instance of the search string on each line is replaced
