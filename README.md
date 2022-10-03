@@ -30,12 +30,7 @@
     - [RWX, identities](#rwx-identities)
   - [Processes](#processes)
     - [How a process works](#how-a-process-works)
-    - [Sockets and signals](#sockets-and-signals)
-    - [Unit files](#unit-files)
-    - [Process spawning](#process-spawning)
-    - [Headers](#headers)
-    - [Accessing system resources](#accessing-system-resources)
-    - [Inter-process communication](#inter-process-communication)
+    - [Signals](#signals)
 - [Part 2 - Configuration & Environment](#part-2-configuration-and-environment)
   - [Environment](#environment)
     - [What, how and why](#what-how-and-why)
@@ -460,39 +455,273 @@ sleep 10; echo "Time's up" $'\a'
 
 ### Processes
 
+Linux, in the Unix tradition differs, from MS-DOS and Windows. It's not only a
+multitasking system, but also multi-user.
+
+id - display user identity
+
+chmod - change a file's mode
+
+umask - set default file permissions
+
+su - run a shell as another user
+
+chown - change a file's owner
+
+chgrp - change a file's group ownership
+
+passwd - change a user's password
+
+If you've tried to cat the "/etc/shadow" file (or others in "/etc" you might have
+noticed that you didn't have permission to read it.
+
+```bash
+[me@hostname ~]$ cat /etc/shadow
+/etc/shadow: Permission denied
+[me@hostname ~]$ file /etc/shadow
+/etc/shadow: regular file, no read permission
+```
+
+This is because as a regular user, you don't have permission to read the contents of it.
+
+```bash
+[me@hostname ~]$ > foo.txt
+[me@hostname ~]$ ls -l foo.txt
+-rw-rw-r-- 1 me me 0 2016-03-06 14:52 foo.txt
+```
+
+"-" - regular file  
+"d" - directory
+"l" - symbolic link
+"c" - character special file (e.g. /dev/null)
+"b" - block special file (e.g. DVD drive)
+
+> NOTE: With symbolic links, the file attributes are always "rwxrwxrwx", these are dummy values. The real file attributes are those of the file the symlink is pointing to.
+
+Owner   Group   Other
+rwx     rwx     rwx
+
+sudo - execute a command as another user
+
+```bash
+[me@hostname ~]$ sudo apt-get update
+Password:
+```
+
 #### How a process works
 
-#### Sockets and signals
+Modern operating systems multitask, in a sense. They give the illusion that they do
+more than one thing at once by rapidly switching from one executing program to another.
 
-#### Unit files
+When a process starts up, the kernel initiates a program called "init". Init in turn runs
+init scritps (found in /etc), that start all the system services. Many of these are just
+programs that sit in the background and do their thing without having a user interface
+(usually referred to as "daemons"). The whole scheme is presented as a parent process pro-
+ducing a child process.
 
-#### Process spawning
+"ps" - report current processes  
+"top" - display tasks  
+"jobs" - list active jobs  
+"bg" - place a job in the background  
+"fg" - bring a job back in the foreground  
+"kill" - send a signal to a process  
+"killall" - kill processes by name  
+"shutdown" - shutdown or reboot the system
 
-#### Headers
+```bash
+[me@hostname ~]$ gedit &
+[1] 28236
+[me@hostname ~]$ ps
+...
+28236 pts/1 00:00:00 gedit
+28349 pts/1 00:00:00 ps
+[me@hostname ~]$ jobs
+[1]+ Running
+[me@hostname ~]$ fg %1
 
-#### Accessing system resources
+#### Signals
 
-#### Inter-process communication
+The kill command is used to kill processes, think pausing or termination.
+
+kill [-signal] PID
+
+Signals:
+"1" - Hangup. Vestige of computers connecting via phone lines and modems. Now reinit.  
+"2" - Interrupt (akin to Ctrl-c in the terminal)  
+"9" - Kill  
+"15" - Terminate  
+"18" - Continue. This will restore a process after a Stop or TSTP signal  
+"19" - Stop  
+"20" - Terminal stop (akin to Ctrl-z). Program can choose to ignore it
 
 ## Part 2 - Configuration & Environment
 
-Why set up an environment? 
+So the shell maintains a body of information during the shell session, this is the
+environment. While most programs use configuration files to adjust their behavior,
+some look for values stored in the environment.
+
+Why set up an environment? To customize the shell experience.
+
+printenv - print part or all of the environment
+
+set - set shell options
+
+export - export environment to subsequently executed programs
+
+alias - create an alias for a command
 
 ### Environment
 
+So how is it established? When you log into the system, the "bash" program starts.
+It reads a series of configuration scripts called startup files, which define the
+default environment shared by all users. This is followed by a login shell session
+(CLI), or a non-login shell session (GUI).
+
 #### What, how and why
+
+"/etc/profile" - global configuration script that applies to all users  
+"~/.bash_profile" - user's personal startup file, used to extend or override settings  
+"~/.bash_login" - if ~/.bash_profile isn't found, bash attempts to read this script  
+"~/.profile" - if neither the profile or the login scripts are found, it tries this one  
+"/etc/bash.bashrc" - global configuration script that applies to all users  
+"~/.bashrc" - user's personal startup file
+
+```bash
+# .bash_profile
+
+# Get the aliases and functions
+if [ -f ~/.bashrc ]; then
+  . ~/.bashrc
+fi
+# User specific environment and startup programs
+PATH=$PATH:$HOME/bin
+export PATH
+```
+
+"#" - comment, not read by the shell. There only for human readability
+"if block" - if compound command, we'll get to this in the Shell scripting chapter
+
+> NOTE: If the file "~/.bashrc" exists, then read the ~/.bashrc" file
+
+"PATH assign" - PATH is set to add the directory "$HOME/bin" to the end of its list
+
+```bash
+[me@hostname ~]$ foo="This is some "
+[me@hostname ~]$ echo $foo
+This is some
+[me@hostname ~]$ foo=$foo"text."
+[me@hostname ~]$ echo $foo
+This is some text.
+```
+
+"export PATH" - tells the shell to make the contents of PATH available to child processes of this shell
+
+So which files should you modify?
+
+".bash_profile" (or equivalent) - to add environment variables
+".bashrc" - everything else
+
+After you've made your modifications, it's time to apply them. Changes made to .bashrc won't take effect
+until you start a new terminal session, since it's only read at the beginning of a session. However you can
+force bash to reread the modified .bashrc using the source command.
+
+```bash
+[me@hostname ~]$ source ~/.bashrc
+```
 
 #### Files and text editors
 
 ### Introduction to Vi/VIm
 
+The reason Vi/VIm were chosen is because of how wide-spread they are. Old networking gear? Runs vi. Modern Linux
+OS? Runs both. Well, that and I like it.
+
+":q" - quit
+":q!" - quit and ignore changes made to the buffer or file
+
+> NOTE: If you get lost in Vi, try pressing Esc twice then try exiting via :q
+
+
 #### Editing Modes
+
+So Vi is a modal editor, when it starts it begins in command mode. In this mode almost every key is a command.
+Don't type anything yet.
+
+To type, first press i to enter insert mode, type, then press Esc.
+
+Saving your work. In command mode (Esc after typing in insert mode) type :w
 
 #### Movement
 
+l or right arrow - right one character  
+h or left arrow - left one character  
+j or down arrow - down one line  
+k or up arrow - up one line  
+0(zero) - to the beginning of the current line  
+^ - to the first non-whitespace character on the line  
+$ - to the end of the current line  
+w - to the beginning of the next word or punctuation character  
+W - to the beginning of the next word, ignoring punctuation characters  
+b - to the beginning of the previous word or punctuation  
+B - to the beginning of the previous word, ignoring punctuation  
+Ctrl-f or Page Down - down one page  
+Ctrl-b or Page Up - up one page  
+numberG - to line number (e.g. 1G moves to the first line of the file)  
+G - to the last line of the file  
+
+Deleting:  
+x - delete the current character  
+3x - delete the current character and the next two characters  
+dd - delete the current line  
+5dd - delete the current line and the next four lines  
+dW - from the current cursor position to the next word  
+d$ - from the current cursor position to the end of the current line  
+d0 - from the current cursor position to the beginning of the line  
+d^ - from the current cursor position to the first non-whitespace character in the line  
+dG - from the current line to the end of the file  
+d20G - from the current line to the twentieth line of the file  
+
+Copying:  
+yy - The current line 
+5yy - The current line and the next four lines  
+yW - From the current cursor position to the beginning of the next word  
+y$ - From the current cursor location to the end of the current line  
+y0 - From the current cursor location to the beginning of the line  
+y^ - From the current cursor location to the first non-whitespace character in the line  
+yG - From the current line to the end of the file  
+y20G - From the current line to the twentieth line of the file
+
 #### Search and replace
 
+/text
+
+:%s/oldText/newText/g
+
+: - colon character starts an ex command  
+% - specifies range of lines for the operation. % is a shortcut meaning from the first line to the last  
+  - alternatively the range could have been 1,5  
+s - specifies the operation (substitution in this case)  
+/oldText/newText/ - search and replacement pattern  
+g - global, without specifying it, only the first instance of the search string on each line is replaced
+
+You now get a prompt.
+
+y - Perform the substitution.  
+n - Skip this instance of the pattern.  
+a - Perform the substitution on this and all subsequent instances of the pattern.  
+q or Esc - Quit substituting.  
+l - Perform this substitution and then quit. This is hort for “last.”  
+Ctrl-e, Ctrl-y - Scroll down and scroll up, respectively. This is useful for viewing the context of the proposed substitution.
+
 #### Editing multiple files
+
+vi file1 file2
+
+:bn - move from one file to the next
+:bp - move back to the previous file
+:buffers
+:buffer 2
+:e newFile
 
 #### Customizing VIM
 
@@ -540,6 +769,16 @@ endif
 ```
 
 #### Tips & Tricks
+
+What if you open a file, write to it, then realize you can't save it because you
+don't have permissions?
+
+:!sudo tee %
+
+% - current file  
+:w - in this case isn't updating your file  
+tee - T-shaped pipe. It directs output to specified files and also sends it to the standard output  
+    - this is a more 'hacky' way of using tee, since we're ignoring half of its functionality
 
 ### Prompt
 
