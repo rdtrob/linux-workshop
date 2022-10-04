@@ -420,10 +420,10 @@ Now that you've seen expansions, how about we control them?
 [me@hostname ~]$ echo this is a     test
 this is a test
 
-[me@linuxbox ~]$ echo The total is $100.00
+[me@hostname ~]$ echo The total is $100.00
 The total is 00.00
 
-[me@linuxbox ~]$ echo The total is \$100.00
+[me@hostname ~]$ echo The total is \$100.00
 The total is $100.00
 ```
 
@@ -1336,9 +1336,143 @@ ls /usr/sbin/[A-Z]*
 
 #### Quantifiers
 
+Extended regular expressions support several ways to specify the number of times an element is matched.
 
+"?" - make the preceding element optional  
+
+Say you want to check a phone number for validity. Say a number is valid if it matches one of two forms,
+where "n" is a numeral:
+(nnn) nnn-nnnn  
+nnn nnn-nnnn
+
+The regular expression would look like this:
+```bash
+^\(?[0-9][0-9][0-9]\)? [0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]$
+```
+
+In this expression we follow the parentheses characters with question marks to indicate that they're to be matched
+zero or one time. Parentheses are normally metacharacters, therefore we precede them with backslashes to cause
+them to be treated as literals instead.
+
+```bash
+[me@hostname ~]$ echo "(555) 123-4567" | grep -E '^\(?[0-9][0-9][0-9]\)? [0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]$'
+(555) 123-4567
+[me@hostname ~]$ echo "555 123-4567" | grep -E '^\(?[0-9][0-9][0-9]\)? [0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]$'
+555 123-4567
+```
+
+"\*" - match an element zero or more times
+
+```bash
+[me@hostname ~]$ echo "This works." | grep -E '[[:upper:]][[:upper:][:lower:] ]*\.'
+This works.
+[me@hostname ~]$ echo "This Works." | grep -E '[[:upper:]][[:upper:][:lower:] ]*\.'
+This Works.
+[me@hostname ~]$ echo "this does not" | grep -E '[[:upper:]][[:upper:][:lower:] ]*\.'
+[me@hostname ~]$
+```
+
+"+" - match an element one or more times
+
+```bash
+[me@hostname ~]$ echo "This that" | grep -E '^([[:alpha:]]+ ?)+$'
+This that
+[me@hostname ~]$ echo "a b c" | grep -E '^([[:alpha:]]+ ?)+$'
+a b c
+```
+
+"{}" - match an element a specific number of times
+
+These metacharacters are used to express minimum and maximum numbers of required matches. They may be specified
+as follows:
+
+{n} - Match the preceding element if it occurs exactly n times.  
+{n,m} - Match the preceding element if it occurs at least n times but no more than m times.  
+{n,} - Match the preceding element if it occurs n or more times.  
+{,m} - Match the preceding element if it occurs no more than m times
+
+```bash
+[me@hostname ~]$ echo "(555) 123-4567" | grep -E '^\(?[0-9]{3}\)? [0-9]{3}-[0-9]{4}$'
+(555) 123-4567
+[me@hostname ~]$ echo "555 123-4567" | grep -E '^\(?[0-9]{3}\)? [0-9]{3}-[0-9]{4}$'
+555 123-4567
+[me@hostname ~]$ echo "5555 123-4567" | grep -E '^\(?[0-9]{3}\)? [0-9]{3}-[0-9]{4}$'
+[me@hostname ~]$
+```
+
+Let's see an example:
+
+```bash
+[me@hostname ~]$ for i in {1..10}; do echo "(${RANDOM:0:3}) ${RANDOM:0:3}-${RANDOM:0:4}" >> phonelist.txt; done
+[me@hostname ~]$ cat phonelist.txt
+(232) 298-2265
+(624) 381-1078
+(540) 126-1980
+(874) 163-2885
+(286) 254-2860
+(292) 108-518
+(129) 44-1379
+(458) 273-1642
+(686) 299-8268
+(198) 307-2440
+[me@hostname ~]$ grep -Ev '^\([0-9]{3}\) [0-9]{3}-[0-9]{4}$' phonelist.txt
+(292) 108-518
+(129) 44-1379
+```
 
 #### find, locate and less
+
+The find command supports a test based on a regular expression. Important consideration to keep in mind, when
+using regex in find versus grep. Whereas grep will print a line when it contains a match, find requires that
+the pathname exactly match the regex.
+
+```bash
+[me@hostname ~]$ find . -regex '.*[^-_./0-9a-zA-Z].*'
+```
+
+The locate program supports both basic (the --regexp option) and the extended (--regex option) regular expressions.  
+With it we can perform many operations:
+
+```bash
+[me@hostname ~]$ locate --regex 'bin/(bz|gz|zip)'
+/bin/bzcat
+/bin/bzcmp
+/bin/bzdiff
+/bin/bzegrep
+/bin/bzexe
+/bin/bzfgrep
+/bin/bzgrep
+...
+```
+
+less and vim both share the same method of searching for text, using the "/" key followed by the regular expression.
+
+```bash
+[me@hostname ~]$ less phonelist.txt
+(232) 298-2265
+(624) 381-1078
+(540) 126-1980
+(874) 163-2885
+(286) 254-2860
+(292) 108-518
+(129) 44-1379
+(458) 273-1642
+(686) 299-8268
+(198) 307-2440
+~
+~
+~
+/^\([0-9]{3}\) [0-9]{3}-[0-9]{4}
+```
+
+> NOTE: less will highlight the strings that match, leaving the invalid ones easy to spot.
+
+Here's a trick on how to find more information about them by searching via zgrep.
+
+```bash
+[me@hostname ~]$ cd /usr/share/man/man1
+[me@hostname man1]$ zgrep -El 'regex|regular expression' *.gz
+```
 
 ### Text processing
 
