@@ -1275,7 +1275,7 @@ mkdir -p repos/fedora-devel
 rsync -av --delete rsync://archive.linux.duke.edu/fedora/linux/development/rawhide/Everything/x86_64/os/ repos/fedora-devel
 ```
 
-> NOTE: In this example we used the remote rsync server, consisting of the "rsync://" protocol, followed by the remote
+In this example we used the remote rsync server, consisting of the "rsync://" protocol, followed by the remote
 hostname "archive.linux.duke.edu", followed by the pathname of the repository.
 
 ### Regular Expressions
@@ -1305,10 +1305,10 @@ specified regular expressions and outputs them.
 [me@hostname ~]$ grep -i '^..j.r$' /usr/share/dict/words
 ```
 
-> NOTE: This example allows us to find all words in our dictionary file that are five letters long and have a "j" in the third
+This example allows us to find all words in our dictionary file that are five letters long and have a "j" in the third
 position and an "r" in the last position.
 
-> NOTE: Common expressions: ^ $ . [ ] { } - ? * + ( ) | \
+Common expressions: ^ $ . [ ] { } - ? * + ( ) | \
 
 > NOTE: Generally metacharacters lose their special meaning when placed within brackets. There are two cases in which
 metacharacters are used within bracket expressions and have different meanings. "^" - the caret, which indicates negation,
