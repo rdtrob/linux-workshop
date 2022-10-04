@@ -28,7 +28,7 @@
   - [Processes](#processes)
     - [How a process works](#how-a-process-works)
     - [Signals](#signals)
-- [Part 2 - Configuration & Environment](#part-2---configuration-and-environment)
+- [Part 2 - Configuration and Environment](#part-2---configuration-and-environment)
   - [Environment](#environment)
     - [What, how and why](#what-how-and-why)
     - [Files and text editors](#files-and-text-editors)
@@ -38,7 +38,7 @@
     - [Search and replace](#search-and-replace)
     - [Editing multiple files](#editing-multiple-files)
     - [Customizing VIM](#customizing-vim)
-    - [Tips & Tricks](#tips-&-tricks)
+    - [Tips and Tricks](#tips-and-tricks)
   - [Prompt](#prompt)
     - [Customizing bashrc](#customizing-bashrc)
     - [Build logic in your configs](#build-logic-in-your-configs)
@@ -47,7 +47,7 @@
   - [Package Managers](#package-managers)
     - [Common tasks](#common-tasks)
   - [Searching for files](#searching-for-files)
-    - [Locate & find](#locate-&-find)
+    - [Locate and find](#locate-and-find)
     - [xargs](#xargs)
   - [Intro to Filesystems](#intro-to-filesystems)
   - [Networking](#networking)
@@ -541,7 +541,7 @@ Signals:
 "19" - Stop  
 "20" - Terminal stop (akin to Ctrl-z). Program can choose to ignore it
 
-## Part 2 - Configuration & Environment
+## Part 2 - Configuration and Environment
 
 So the shell maintains a body of information during the shell session, this is the
 environment. While most programs use configuration files to adjust their behavior,
