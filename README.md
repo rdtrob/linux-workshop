@@ -2,7 +2,6 @@
 
 - [Goals](#goals)
   - [Why Debian?](#why-debian)
-  - [Why Ansible?](#why-ansible)
 - [Requirements](#requirements)
   - [Operating System](#operating-system)
   - [Chocolatey](#chocolatey)
@@ -97,13 +96,6 @@ and go over common administration tasks.
 Debian is the distribution Ubuntu is based on, it has the same package manager
 as well - There are many Linux distributions out there, I just happen to enjoy
 Debian more.
-
-### Why Ansible
-
-Ansible replicates what we'd use in a work environment to deploy IaC
-(infrastructure as code). Put simply, it allows us to automate the installation
-of software and administer servers. And what better way to show the power of auto-
-mation than deploy the workshop setup itself? 
 
 ## Requirements
 
