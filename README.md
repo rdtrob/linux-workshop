@@ -524,6 +524,7 @@ ducing a child process.
 [me@hostname ~]$ jobs
 [1]+ Running
 [me@hostname ~]$ fg %1
+```
 
 #### Signals
 
@@ -1183,29 +1184,159 @@ tcpdump - dump traffic on a network
 One of the primary tasks of a system's administrator is keeping the system's data secure. One way
 this is done is by performing timely backups.
 
+> NOTE: Don't compulsively compress. If a file has already been compressed, especially lossless, it has
+no redundant information. You'll only have a bigger archive because of the overhead, that's the data
+that is added to the file to describe the compression.
+
 #### gzip
 
 gzip - tool that compresses or expands files
+
+When executed it replaces the original file with a compressed version of it. The corresponding "gunzip"
+program is used to restore compressed files to their original uncompressed form.
+
+```bash
+[me@hostname ~]$ ls -l /etc > foo.txt
+[me@hostname ~]$ gzip file.txt
+[me@hostname ~]$ ls -l foo*
+[me@hostname ~]$ gunzip foo.txt
+```
 
 #### tar
 
 tar - tape archiving utility
 
+Classic tool for archiving files. Its name comes from tape archive, revealing its roots as a tool for
+backing up magnetic tapes.
+
+```bash
+[me@hostname ~]$ mkdir -p playground/dir-{001.100}
+[me@hostname ~]$ touch playground/dir-{001..100}/file-{A..Z}
+[me@hostname ~]$ tar cf playground.tar playground
+[me@hostname ~]$ ls -lahi
+[me@hostname ~]$ tar xvf playground.tar
+```
+
+> NOTE: Notice that we offer the, then, non-existing archive name ("playground.tar") before the directory
+it's supposed to archive. Refer to the tool's respective man page before archiving, compressing or removing
+something to avoid unwanted file removal.
+
+You can even be selective regarding what you want to extract.
+
+```bash
+[me@hostname ~]$ sudo tar cf /datastore/backup/home.tar /home
+[me@hostname ~]$ tar xvf ../playground.tar --wildcards 'home/me/playground/dir-*/file.txt'
+[me@hostname ~]$ find playground -name 'file.txt' -exec tar rf playground.tar '{}' '+'
+```
+
+You can even create incremental backups using tar:
+
+```bash
+[me@hostname ~]$ find playground -name 'file-A' | tar cf - --files-from=- | gzip > playground.tgz
+```
+
 #### zip
 
 zip - tool that packages and compresses files
+
+zip is both a compression tool and an archiving one. In Windows it's common, however the common file format
+in Linux is gzip.
+
+zip -r playground.zip playground
+
+unzip playground
 
 #### File synchronization
 
 rsync - remote file and directory synchronization
 
+rsync source destination
+
+ls destination
+
+rsync -avP playground foo
+
+```bash
+[me@hostname ~]$ mkdir -p /datastore/backup
+[me@hostname ~]$ sudo rsync -av --delete /etc /home /usr/local /datastore/backup
+```
+
+You can make use of aliases:
+alias backup='sudo rsync -av --delete /etc /home /usr/local /datastore/backup
+
+sudo rsync -av --delete --rsh=ssh /etc /home /usr/local remote-system:/backup
+
+We went through how to securely transfer data through an ssh-encrypted tunnel. Let's see how we
+can transfer files via an rsync server. Rsync can run as a service (daemon) and listen to incoming
+requests for synchronization, often done to allow mirroring of a remote system.
+
+```bash
+mkdir -p repos/fedora-devel
+rsync -av --delete rsync://archive.linux.duke.edu/fedora/linux/development/rawhide/Everything/x86_64/os/ repos/fedora-devel
+```
+
+> NOTE: In this example we used the remote rsync server, consisting of the "rsync://" protocol, followed by the remote
+hostname "archive.linux.duke.edu", followed by the pathname of the repository.
+
 ### Regular Expressions
+
+In this chapter we'll take a look at tools used to manipulate text. We've gone through some escape characters and other
+operators that allowed us to do some neat tricks, so let's take a look at them - regular expressions
+
+Regular expressions are symbolic notations used to identify patterns in text.
+
+> NOTE: Understand that not all regular expressions are the same, they vary slightly from tool to tool and from programming
+language to another. For this case we'll limit ourselves to regex as described in the POSIX standard ( which covers most 
+command line tools ).
 
 #### grep
 
+The main program is grep, or "global regular expression print". It simply searches files for the occurrence of text matching
+specified regular expressions and outputs them.
+
+```bash
+[me@hostname ~]$ grep -L bzip dirlist*.txt
+[me@hostname ~]$ grep -h '.zip' dirlist*.txt
+```
+
 #### Logic, any and negation
 
+```bash
+[me@hostname ~]$ grep -i '^..j.r$' /usr/share/dict/words
+```
+
+> NOTE: This example allows us to find all words in our dictionary file that are five letters long and have a "j" in the third
+position and an "r" in the last position.
+
+> NOTE: Common expressions: ^ $ . [ ] { } - ? * + ( ) | \
+
+> NOTE: Generally metacharacters lose their special meaning when placed within brackets. There are two cases in which
+metacharacters are used within bracket expressions and have different meanings. "^" - the caret, which indicates negation,
+and "-" - the dash, which is used to indicate a character range.
+
+```bash
+[me@hostname ~]$ grep -h '[bg]zip' dirlist*.txt
+[me@hostname ~]$ grep -h '[^bg]zip' dirlist*.txt
+```
+
+The first example, using a two-character set, we match any line that contains the string bzip or gzip, while the second one
+has a different take. With negation, we get a list of files that contain the string zip preceded by any character except "b"
+or "g".
+
+> NOTE: The file zip wasn't found. A negated character set still requires a character at the given position, but the character
+must not be a member of the negated set.
+
+```bash
+[me@hostname ~]$ grep -h '^[ABCDEFGHIJKLMNOPQRSTUVWXZY]' dirlist*.txt
+[me@hostname ~]$ grep -h '^[A-Za-z0-9]' dirlist*.txt
+
+ls /usr/sbin/[ABCDEFGHIJKLMNOPQRSTUVWXYZ]*
+ls /usr/sbin/[A-Z]*
+```
+
 #### Quantifiers
+
+
 
 #### find, locate and less
 
