@@ -11,7 +11,7 @@
   - [System Upgrade](#system-upgrade)
 
 ## Table of Contents
-- [Part 1 - SHELL](#part-1-shell)
+- [Part 1 - SHELL](#part-1---shell)
   - [Learning the Shell](#learning-the-shell)
     - [History](#history)
   - [Navigation](#navigation)
@@ -28,7 +28,7 @@
   - [Processes](#processes)
     - [How a process works](#how-a-process-works)
     - [Signals](#signals)
-- [Part 2 - Configuration & Environment](#part-2-configuration-and-environment)
+- [Part 2 - Configuration & Environment](#part-2---configuration-and-environment)
   - [Environment](#environment)
     - [What, how and why](#what-how-and-why)
     - [Files and text editors](#files-and-text-editors)
@@ -43,7 +43,7 @@
     - [Customizing bashrc](#customizing-bashrc)
     - [Build logic in your configs](#build-logic-in-your-configs)
   - [LSOF and PS](#lsof-and-ps)
-- [Part 3 - Common tasks and tools](#part-3-common-tasks-and-tools)
+- [Part 3 - Common tasks and tools](#part-3---common-tasks-and-tools)
   - [Package Managers](#package-managers)
     - [Common tasks](#common-tasks)
   - [Searching for files](#searching-for-files)
@@ -69,7 +69,7 @@
     - [cat, sort and uniq](#cat-sort-uniq)
     - [cut, paste and join](#cut-paste-join)
     - [diff and sed](#diff-and-sed)
-- [Part 4 - Shell scripts](#part-4-shell-scripts)
+- [Part 4 - Shell scripts](#part-4---shell-scripts)
   - [Format](#format)
   - [Indentation](#indentation)
   - [Keep scripts running](#keep-scripts-running)
@@ -1086,7 +1086,7 @@ output before running this command.
 dd if=input_file of=output_file [bs=block size [count=blocks]]
 ```
 
-Or more specific examples:
+Or more specific examples:  
 dd if=/dev/sdb of=/dev/sdc  
 dd if=debian.img of=/dev/sdc  
 dd if=/dev/cdrom of=debian.iso  
