@@ -1341,7 +1341,7 @@ Extended regular expressions support several ways to specify the number of times
 "?" - make the preceding element optional  
 
 Say you want to check a phone number for validity. Say a number is valid if it matches one of two forms,
-where "n" is a numeral:
+where "n" is a numeral:  
 (nnn) nnn-nnnn  
 nnn nnn-nnnn
 
