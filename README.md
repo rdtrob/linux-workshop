@@ -1476,11 +1476,202 @@ Here's a trick on how to find more information about them by searching via zgrep
 
 ### Text processing
 
+cat - concatenate files and print on the standard output  
+sort – Sort lines of text files  
+uniq – Report or omit repeated lines  
+cut – Remove sections from each line of files  
+paste – Merge lines of files  
+join – Join lines of two files on a common field  
+comm – Compare two sorted files line by line  
+diff – Compare files line by line  
+patch – Apply a diff file to an original  
+tr – Translate or delete characters  
+sed – Stream editor for filtering and transforming text  
+aspell – Interactive spell checker
+
+> NOTE: Opposite 'head', you have the 'tail' command. Check their respective man pages to see what they do.
+
 #### cat, sort and uniq
+
+sort file1.txt file2.txt file3.txt > final_sorted_list.txt 
+
+du -s /usr/share/* | head  
+
+ls -l /usr/bin | sort -nrk 5 | head  
+
+```bash
+[me@hostname ~]$ sort distros.txt
+Fedora 10 11/25/2008
+Fedora 5 03/20/2006
+Fedora 6 10/24/2006
+Fedora 7 05/31/2007
+Fedora 8 11/08/2007
+Fedora 9 05/13/2008
+SUSE 10.1 05/11/2006
+SUSE 10.2 12/07/2006
+SUSE 10.3 10/04/2007
+SUSE 11.0 06/19/2008
+Ubuntu 6.06 06/01/2006
+Ubuntu 6.10 10/26/2006
+Ubuntu 7.04 04/19/2007
+Ubuntu 7.10 10/18/2007
+```
+
+sort --key=1,1 --key=2n distros.txt  
+
+sort -k 3.7nbr -k 3.1nbr -k 3.4nbr distros.txt
+
+sort -t ':' -k 7 /etc/passwd | head  
 
 #### cut, paste and join
 
+cut - program used to extract a section of text from a line, and output the extracted section to STDOUT
+
+cat -A distros.txt  
+
+cut -f 3 distros.txt  
+
+cut -f 3 distros.txt | cut -c 7-10  
+
+> NOTE: Expanding Tabs
+Our distros.txt file is ideally formatted for extracting fields using cut. But
+what if we wanted a file that could be fully manipulated with cut by characters,
+rather than fields? This would require us to replace the tab characters within the
+file with the corresponding number of spaces. Fortunately, the GNU Coreutils
+package includes a tool for that. Named expand, this program accepts either one
+or more file arguments or standard input and outputs the modified text to standard
+output.
+If we process our distros.txt file with expand, we can use cut -c to ex-
+tract any range of characters from the file. For example, we could use the follow-
+ing command to extract the year of release from our list by expanding the file and
+using cut to extract every character from the 23rd position to the end of the line:
+```bash
+[me@hostname ~]$ expand distros.txt | cut -c 23-
+```
+Coreutils also provides the unexpand program to substitute tabs for spaces.
+
+paste - does the opposite of cut, it adds one or more columns of text to a file
+
+sort -k 3.7nbr -k 3.1nbr -k 3.4nbr distros.txt > distros-by-date.txt  
+cut -f 1,2 distros-by-date.txt > distros-versions.txt  
+head distros-versions.txt  
+cut -f 3 distros-by-date.txt > distros-dates.txt  
+head distros-dates.txt  
+paste distros-dates.txt distros-versions.txt  
+
 #### diff and sed
+
+Like the comm program, diff is used to detect the differences between files. Diff however
+is a much more complex tool.
+
+diff file1.txt file2.txt  
+diff -c file1.txt file2.txt  
+
+> NOTE: Using diff with the -c option shows the range in the context format, considerably more human readable.
+
+You can either modify the file using your preferred text editor or you can use patch.
+
+```bash
+[me@hostname ~]$ diff -Naur file1.txt file2.txt > patchfile.txt
+[me@hostname ~]$ patch < patchfile.txt
+patching file file1.txt
+[me@hostname ~]$ cat file1.txt
+b
+c
+d
+e
+```
+
+tr - program used to transliterate characters, think of it as a character-based search and replace 
+
+Transliteration is the process of changing characters from one alphabet to another, say, lowercase to uppercase.
+
+```bash
+[me@linuxbox ~]$ echo "lowercase letters" | tr a-z A-Z
+LOWERCASE LETTERS
+```
+
+
+
+While editing on the fly is possible, keep it to small, niche cases, such as echo-ing a string into a new file.
+
+echo -e "Host remoteHost \n\tIdentitiesOnly=yes" >> ~/.ssh/config
+
+> NOTE: We used echo -e in this case to have it interpret \n and \t as newline and tab respectively. The output is as follows:
+
+```bash
+me@hostname ~]$ tail -3 ~/.ssh/config
+Host remoteHost
+	User me
+        IdentityFile ~/.ssh/id_rsa
+[me@hostname ~]$ echo -e "Host remoteHost2 \n\tIdentitiesOnly=yes" >> ~/.ssh/config
+me@hostname ~]$ tail -5 ~/.ssh/config
+Host remoteHost
+	User me
+        IdentityFile ~/.ssh/id_rsa
+
+Host remoteHost2
+	IdentitiesOnly=yes
+```
+
+sed - short for stream editor, it performs text editing on a stream of text (specified files or STDIN
+
+```bash
+[me@linuxbox ~]$ echo "front" | sed 's/front/back/'
+back
+```
+
+```
+#Command Description
+= - Output the current line number.
+a - Append text after the current line.
+d - Delete the current line.
+i - Insert text in front of the current line.
+p - Print the current line. By default, sed prints every
+    line and only edits lines that match a specified
+    address within the file. The default behavior can
+    be overridden by specifying the -n option.
+    q Exit sed without processing any more lines. If the
+    -n - option is not specified, output the current line.
+    Q - Exit sed without processing any more lines.
+    s/regexp/replacement/ - Substitute the contents of replacement wherever
+    regexp is found. replacement may include the
+    special character &, which is equivalent to the text
+    matched by regexp. In addition, replacement may
+    include the sequences \1 through \9, which are
+    the contents of the corresponding subexpressions
+    in regexp. For more about this, see the discussion
+    of back references below. After the trailing slash
+    following replacement, an optional flag may be
+    specified to modify the s command’s behavior.
+y/set1/set2 - Perform transliteration by converting characters
+              from set1 to the corresponding characters in set2.
+              Note that unlike tr, sed requires that both sets be
+              of the same length.
+```
+
+Here's an example of how ugly it can get:
+
+```bash
+[me@linuxbox ~]$ sed 's/\([0-9]\{2\}\)\/\([0-9]\{2\}\)\/\([0-9]\{4\}\
+)$/\3-\1-\2/' distros.txt
+SUSE 10.2 2006-12-07
+Fedora 10 2008-11-25
+SUSE 11.0 2008-06-19
+Ubuntu 8.04 2008-04-24
+Fedora 8 2007-11-08
+SUSE 10.3 2007-10-04
+Ubuntu 6.10 2006-10-26
+Fedora 7 2007-05-31
+Ubuntu 7.10 2007-10-18
+Ubuntu 7.04 2007-04-19
+SUSE 10.1 2006-05-11
+Fedora 6 2006-10-24
+Fedora 9 2008-05-13
+Ubuntu 6.06 2006-06-01
+Ubuntu 8.10 2008-10-30
+Fedora 5 2006-03-20
+```
 
 ## Part 4 - Shell scripts
 
