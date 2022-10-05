@@ -567,8 +567,8 @@ default environment shared by all users. This is followed by a login shell sessi
 #### What, how and why
 
 "/etc/profile" - global configuration script that applies to all users  
-"~/.bash_profile" - user's personal startup file, used to extend or override settings  
-"~/.bash_login" - if ~/.bash_profile isn't found, bash attempts to read this script  
+"\~/.bash_profile" - user's personal startup file, used to extend or override settings  
+"~/.bash_login" - if \~/.bash_profile isn't found, bash attempts to read this script  
 "~/.profile" - if neither the profile or the login scripts are found, it tries this one  
 "/etc/bash.bashrc" - global configuration script that applies to all users  
 "~/.bashrc" - user's personal startup file
